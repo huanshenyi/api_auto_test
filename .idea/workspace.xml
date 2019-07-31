@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="059f95ef-9f64-4673-b194-67ca7b1ac55c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnittestCase/test_case01.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnittestCase/test_case01.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -157,10 +158,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.test_case01" />
+        <item itemvalue="Python.test_case01" />
+        <item itemvalue="Python.test_case01" />
+        <item itemvalue="Python.test_case01" />
         <item itemvalue="Python tests.Unittests in mock_study.py" />
-        <item itemvalue="Python.flask_study" />
-        <item itemvalue="Python.header_study" />
-        <item itemvalue="Python.two_day" />
       </list>
     </recent_temporary>
   </component>
@@ -183,7 +184,8 @@
       <workItem from="1564151677926" duration="28000" />
       <workItem from="1564178826584" duration="607000" />
       <workItem from="1564227787110" duration="614000" />
-      <workItem from="1564492987576" duration="1191000" />
+      <workItem from="1564492987576" duration="1680000" />
+      <workItem from="1564576071225" duration="3855000" />
     </task>
     <servers />
   </component>
@@ -195,7 +197,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
