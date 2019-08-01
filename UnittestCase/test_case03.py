@@ -1,11 +1,5 @@
 import requests
 import unittest
-import os
-import sys
-
-base_path = os.getcwd()
-sys.path.append(base_path)
-from Base.base_request import request
 
 url = "http://www.imooc.com"
 data = {
@@ -13,9 +7,8 @@ data = {
     "password": '345'
 }
 
-host = "http://www.imooc.com"
 
-class TestCase01(unittest.TestCase):
+class TestCase03(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         print("caseクラス実行開始")
@@ -39,39 +32,35 @@ class TestCase01(unittest.TestCase):
         self.assertDictEqual(data1, data, msg="一致しません")
 
     def test_02(self):
-        print("02")
         data1 = {
             "username": "123",
             "password": '345'
         }
         self.assertDictEqual(data1, data)
 
-    @unittest.skipIf(host != "http://www.imooc.com", "03実行しない")
     def test_03(self):
-        print("test03")
         flag = True
         self.assertFalse(flag, msg="Trueではない")
 
-    @unittest.skip("04実行しない")
     def test_04(self):
         flag = True
         self.assertTrue(flag)
 
     def test_05(self):
-        print("test05")
         flag = "111"
         self.assertEqual(flag, "111")
 
-
     def test_06(self):
-        res = request.run_main("get", url, data)
-        print(res)
+        flag = "adfadda"
+        s = "adf"
+        self.assertIn(s, flag)
 
 
 if __name__ == "__main__":
+    suite = unittest.TestSuite()
+    tests = [TestCase03("test_01")]
+    suite.addTest(tests)
     # suite.addTest(TestCase01("test_01"))
     # suite.addTests()
-    suite = unittest.TestSuite()
-    tests = [TestCase01("test_06")]
-    suite.addTests(tests)
-    runner = unittest.TextTestRunner().run(suite)
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
