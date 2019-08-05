@@ -7,6 +7,7 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 import mock
 import json
+import HTMLTestRunner
 from Base.base_request import request
 
 host = "http://www.imooc.com/"
@@ -23,7 +24,7 @@ def get_value(key):
 
 class ImoocCase(unittest.TestCase):
     def test_banner(self):
-        url = host + 'search/hotwords'
+        url = host + 'api3/beta4'
         data = {
            # 'token': '',
            # 'type': '1',
@@ -33,7 +34,25 @@ class ImoocCase(unittest.TestCase):
         mock_method = mock.Mock(return_value=get_value("api3/beta4"))
         request.run_main = mock_method
         res = request.run_main('post', url, data)
-        self.assertEqual(res['id'], 1)
+        self.assertEqual(res['id'], 2)
+
+    def test_search(self):
+        url = host + "search/hotwords"
+        data = {
+
+        }
+        mock_method = mock.Mock(return_value=get_value("search/hotwords"))
+        request.run_main = mock_method
+        res = request.run_main('post', url, data)
+        self.assertEqual(res['result'], 10)
 
 if __name__ == "__main__":
-    unittest.main()
+    suite = unittest.TestSuite()
+    suite.addTest(ImoocCase('test_banner'))
+    suite.addTest(ImoocCase('test_search'))
+    file_path = base_path+'/report/report.html'
+    with open(file_path, 'wb') as f:
+        runner = HTMLTestRunner.HTMLTestRunner(stream=f, title="this is title", description="Huanshenyi test")
+        runner.run(suite)
+    f.close()
+    # unittest.main()
