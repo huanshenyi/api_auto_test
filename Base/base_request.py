@@ -14,7 +14,7 @@ class BaseRequest:
         :param data:
         :return:
         """
-        res = requests.post(url=url, data=data).text
+        res = requests.post(url=url, data=data, verify=False).text
         return res
 
     def send_get(self, url, data) -> object:
@@ -24,7 +24,7 @@ class BaseRequest:
         :param data:
         :return:
         """
-        res = requests.get(url=url, params=data).text
+        res = requests.get(url=url, params=data, verify=False).text
         return res
 
     def run_main(self, method, url, data):
