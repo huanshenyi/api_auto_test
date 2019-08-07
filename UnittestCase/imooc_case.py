@@ -46,6 +46,15 @@ class ImoocCase(unittest.TestCase):
         res = request.run_main('post', url, data)
         self.assertEqual(res['result'], 10)
 
+    def test_new_register(self):
+        username = '123111'
+        url = 'register'
+        data = {
+            'user': username
+        }
+
+
+
 if __name__ == "__main__":
     suite = unittest.TestSuite()
     suite.addTest(ImoocCase('test_banner'))
