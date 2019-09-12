@@ -10,9 +10,6 @@ sys.path.append(rootPath)
 open_excel = openpyxl.load_workbook(base_path + "/Case/api_test_case.xlsx")
 sheet_name = open_excel.sheetnames
 excel_value = open_excel[sheet_name[0]]
-# print(excel_value)
-# print(excel_value.cell(1, 3).value)
-# print(excel_value.max_row)
 
 
 class HandExcel:
@@ -64,7 +61,7 @@ class HandExcel:
         return row_list
 
 
-
+excel_data = HandExcel()
 
 if __name__ == "__main__":
     handel = HandExcel()
