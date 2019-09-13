@@ -15,13 +15,16 @@ class RunMain:
         rows = excel_data.get_rows()
         for i in range(rows):
             data = excel_data.get_rows_value(i + 2)
+            print(data)
             is_run = data[2].lower()
+            print(is_run)
             if is_run == "yes":
                 method = data[5].lower()
                 url = data[4].lower()
                 data1 = data[6]
-                request.run_main(method, url, data1)
-
+                res = request.run_main(method, url, data1)
+                print(res)
+                break
 
 
 if __name__ == "__main__":

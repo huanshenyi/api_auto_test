@@ -1,4 +1,5 @@
 {
   "search/hotwords": {"result":10,"data":["\u6bd5\u8bbe","React","\u9762\u8bd5","\u7b97\u6cd5","Vue.js","Python","GO\u8bed\u8a00","\u5c0f\u7a0b\u5e8f"],"msg":"\u6210\u529f"},
-  "api3/beta4": {"id": 1,"data": {"banner": "1"}}
+  "api3/beta4": {"id": 1,"data": {"banner": "1"}},
+  "login": {"res": "ok"}
 }
