@@ -24,7 +24,10 @@ class BaseRequest:
         :param data:
         :return:
         """
-        res = requests.post(url=url, data=data, verify=False).text
+
+        data = json.dumps(data)
+        response = requests.post(url=url, data=data, verify=False)
+        res = response.text
         return res
 
     def send_get(self, url, data) -> object:
@@ -45,26 +48,21 @@ class BaseRequest:
         :param data:
         :return:
         """
-        return get_value(url)
+        # return get_value(url)
         base_url = handle_init.get_value("host")
-        print(base_url)
         if "http" not in url:
             url = base_url + url
         print(url)
         if method == "get":
-             try:
-                res = self.send_get(url, data)
-             except Exception:
-                print("get request中にエラー出ました", url, data)
+           res = self.send_get(url, data)
+           print("get request中にエラー出ました", url, data)
         else:
-            try:
-                res = self.send_post(url, data)
-            except:
-                print("post request中にエラー出ました", url, data)
+           res = self.send_post(url, data)
+           print("post request中にエラー出ました", url, data)
         try:
             res = json.loads(res)
         except:
-            res = None
+            # res = None
             print("textの結果")
         return res
 

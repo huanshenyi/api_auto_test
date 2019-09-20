@@ -18,7 +18,7 @@ class HandExcel:
         excelロード
         :return:
         """
-        open_excel = openpyxl.load_workbook(base_path + "/Case/api_test_case.xlsx")
+        open_excel = openpyxl.load_workbook(base_path + "/Case/api_test_case_imooc.xlsx")
         return open_excel
 
     def get_sheet_data(self, index=None):
