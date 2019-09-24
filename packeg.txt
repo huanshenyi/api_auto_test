@@ -1,0 +1,2 @@
+requests
+deepdiff->dickの内容一致するかどうか判断用のライブラリ
