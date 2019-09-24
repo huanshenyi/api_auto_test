@@ -6,7 +6,9 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 from Util.handle_excel import excel_data
+from Util.handel_result import handel_result
 from Base.base_request import request
+
 
 
 # ['001', '登録', 'Yes', None, 'Login', 'Post', '{“username”:”111111”}', 'Yes', 'message', None, None, None]
@@ -23,6 +25,12 @@ class RunMain:
                 url = data[4]
                 data1 = data[6]
                 res = request.run_main(method, url, data1)
+                # 結果と予想結果を比較する
+                # サーバーのerrorCode
+                code = res["errorCode"]
+                message = res["errorDesc"]
+                cofig_message = handel_result(url, str(code))
+                print(message, cofig_message)
                 print(res)
                 # break
 
