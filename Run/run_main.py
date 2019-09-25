@@ -7,9 +7,8 @@ sys.path.append(rootPath)
 
 from Util.handle_excel import excel_data
 from Util.handel_result import handel_result_json
-from Util.handel_result import handel_result
+from Util.handel_result import handel_result, get_result_json
 from Base.base_request import request
-
 
 
 # ['001', '登録', 'Yes', None, 'Login', 'Post', '{“username”:”111111”}', 'Yes', 'message', None, None, None]
@@ -21,6 +20,7 @@ class RunMain:
             is_run = data[2]
             if is_run == "yes":
                 method = data[5]
+                # アクセスのapi
                 url = data[4]
                 data1 = data[6]
                 # 予想結果判断の方法
@@ -28,6 +28,7 @@ class RunMain:
                 # 予想結果
                 excepect_result = data[9]
                 res = request.run_main(method, url, data1)
+                # print(res)
                 # 結果と予想結果を比較する
                 # サーバーのerrorCode
                 code = str(res["errorCode"])
@@ -35,17 +36,27 @@ class RunMain:
                 if excepect_method == "mec":
                     config_message = handel_result(url, str(code))
                     if message == config_message:
-                        print("case通過")
+                        print("テスト通過")
                     else:
                         print("case失敗")
-                if excepect_method == "errorcode":
+                elif excepect_method == "errorcode":
                     if excepect_result == code:
                         print("テスト通過")
                     else:
-                        print("テスト失敗")
-                if excepect_method == "json":
-                    # handel_result_json()
-                    pass
+                        print("case失敗")
+                elif excepect_method == "json":
+                    # err_codeに基づいての判断
+                    if code == "1000":
+                        status_str = "success"
+                    else:
+                        status_str = "error"
+                    excepect_result = get_result_json(url, status_str)
+                    # サーバーからのリスポンスとjsonデータ比較
+                    result = handel_result_json(res, excepect_result)
+                    if result:
+                        print("case成功")
+                    else:
+                        print("失敗")
                 # break
 
 

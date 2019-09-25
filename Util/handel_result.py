@@ -16,6 +16,12 @@ from Util.handle_json import get_value
 
 
 def handel_result(url, code) -> any:
+    """
+    予測結果を取得
+    :param url: configの内容を取得用のキー
+    :param code: 実際サーバからのリスポンスのエラーcode
+    :return: 状態メッセージを返す
+    """
     data = get_value(url, "/Config/code_message.json")
     if data != None:
         for i in data:
@@ -25,20 +31,40 @@ def handel_result(url, code) -> any:
     return None
 
 
-def handel_result_json():
+def get_result_json(url, status):
     """
-    形式の確認
+    検証用のjsonデータを取得
+    :param url: ターゲットになるjsonデーターを取得のキー
     :return:
     """
-    dict1 = {"aaa": "AA1A", "bbb": "BB1B1", "DDD": [{"12", "22"}, {"35", "14"}]}
-    dict2 = {"aaa": "AAA", "bbb": "BB1B", "DDD": [{"12", "22"}, {"35", "14"}]}
-    cmp_dict = DeepDiff(dict1, dict2, ignore_order=True).to_dict()
-    if cmp_dict.get("dictionary_item_added"):
-        print("case失敗")
-    else:
-        print("case成功")
+    data = get_value(url, "/Config/result.json")
+    if data != None:
+        for i in data:
+            message = i.get(status)
+            if message:
+                return message
+    return None
+
+
+def handel_result_json(dict1, dict2):
+    """
+    json形式の確認
+    :return:
+    """
+    # print(dict1, dict2)
+    if isinstance(dict1, dict) and isinstance(dict2, dict):
+        cmp_dict = DeepDiff(dict1, dict2, ignore_order=True).to_dict()
+        print(cmp_dict)
+        if cmp_dict.get("dictionary_item_added"):
+            return False
+        else:
+            return True
+    return False
 
 
 if __name__ == "__main__":
+   dict1 = {"aaa": "AA1A", "bbb": "BB1B1", "DDD": [{"12", "22"}, {"35", "14"}]}
+   dict2 = {"aaa": "AAA", "bbb": "BB1B", "DDD": [{"12", "22"}, {"35", "14"}]}
    # print(handel_result("api3/getbanneradvertver2", "10001"))
-   handel_result_json()
+   # print(handel_result_json(dict1, dict2))
+   print(get_result_json("api3/newcourseskill", "error"))

@@ -9,7 +9,7 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 from Util.handle_init import handle_init
-from Util.handle_json import get_value
+
 
 
 
@@ -52,13 +52,13 @@ class BaseRequest:
         base_url = handle_init.get_value("host")
         if "http" not in url:
             url = base_url + url
-        print(url)
+        # print(url)
         if method == "get":
            res = self.send_get(url, data)
-           print("get request中にエラー出ました", url, data)
+           # print("get request中にエラー出ました", url, data)
         else:
            res = self.send_post(url, data)
-           print("post request中にエラー出ました", url, data)
+           # print("post request中にエラー出ました", url, data)
         try:
             res = json.loads(res)
         except:

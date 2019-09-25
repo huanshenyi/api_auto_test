@@ -1,6 +1,6 @@
 {"api3/newcourseskill":[
     {
-    "sucess":
+    "success":
         {
             "status":0,
             "data":{
@@ -39,7 +39,7 @@
 ],
 "api3/getmedialist":[
     {
-        "sucess":
+        "success":
         {
             "status":0,
             "data":{
