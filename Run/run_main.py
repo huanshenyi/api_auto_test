@@ -1,3 +1,4 @@
+import json
 import sys
 import os
 base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,12 +10,14 @@ from Util.handle_excel import excel_data
 from Util.handel_result import handel_result_json
 from Util.handel_result import handel_result, get_result_json
 from Base.base_request import request
+from Util.handle_cookie import get_cookie_value
 
 
 # ['001', '登録', 'Yes', None, 'Login', 'Post', '{“username”:”111111”}', 'Yes', 'message', None, None, None]
 class RunMain:
     def run_case(self):
         rows = excel_data.get_rows()
+        cookie = None
         for i in range(rows):
             data = excel_data.get_rows_value(i + 2)
             is_run = data[2]
@@ -27,7 +30,11 @@ class RunMain:
                 excepect_method = data[8]
                 # 予想結果
                 excepect_result = data[9]
-                res = request.run_main(method, url, data1)
+                # クッキーの操作
+                cookie_method = data[7]
+                if cookie_method == "yes":
+                    cookie = get_cookie_value("app")
+                res = request.run_main(method, url, data1, cookie)
                 # print(res)
                 # 結果と予想結果を比較する
                 # サーバーのerrorCode
@@ -36,13 +43,21 @@ class RunMain:
                 if excepect_method == "mec":
                     config_message = handel_result(url, str(code))
                     if message == config_message:
-                        print("テスト通過")
+                        excel_data.excel_write_data(i+2, 11, "成功")
+                        print("テスト成功")
                     else:
+                        excel_data.excel_write_data(i + 2, 11, "失敗")
+                        # 失敗する場合は結果値も記入
+                        excel_data.excel_write_data(i + 2, 12, json.dumps(res))
                         print("case失敗")
                 elif excepect_method == "errorcode":
                     if excepect_result == code:
-                        print("テスト通過")
+                        excel_data.excel_write_data(i + 2, 11, "成功")
+                        print("テスト成功")
                     else:
+                        excel_data.excel_write_data(i + 2, 11, "失敗")
+                        # 失敗する場合は結果値も記入
+                        excel_data.excel_write_data(i + 2, 12, json.dumps(res))
                         print("case失敗")
                 elif excepect_method == "json":
                     # err_codeに基づいての判断
@@ -54,9 +69,13 @@ class RunMain:
                     # サーバーからのリスポンスとjsonデータ比較
                     result = handel_result_json(res, excepect_result)
                     if result:
-                        print("case成功")
+                        excel_data.excel_write_data(i + 2, 11, "成功")
+                        print("テスト成功")
                     else:
-                        print("失敗")
+                        excel_data.excel_write_data(i + 2, 11, "失敗")
+                        # 失敗する場合は結果値も記入
+                        excel_data.excel_write_data(i + 2, 12, json.dumps(res))
+                        print("case失敗")
                 # break
 
 

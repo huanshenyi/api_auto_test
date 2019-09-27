@@ -20,3 +20,18 @@ def read_json(file_name=None):
 def get_value(key, file_name=None):
     data = read_json(file_name)
     return data.get(key)
+
+
+def write_value(data):
+    data_value = json.dumps(data)
+    with open(base_path + "/Config/cookie.json", "w") as f:
+        f.write(data_value)
+
+
+if __name__ == "__main__":
+    data = {
+        "app": {
+            "aaaa": "bbbb"
+        }
+    }
+    write_value(data)

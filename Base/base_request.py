@@ -9,7 +9,7 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 from Util.handle_init import handle_init
-
+from datetime import datetime
 
 
 
@@ -17,7 +17,7 @@ class BaseRequest:
     def __init__(self):
         pass
 
-    def send_post(self, url, data) -> object:
+    def send_post(self, url, data, cookie=None) -> object:
         """
         post_request
         :param url:
@@ -26,21 +26,23 @@ class BaseRequest:
         """
 
         data = json.dumps(data)
-        response = requests.post(url=url, data=data, verify=False)
+        print(datetime.now())
+        response = requests.post(url=url, data=data, verify=False, cookies=cookie)
+        print(datetime.now())
         res = response.text
         return res
 
-    def send_get(self, url, data) -> object:
+    def send_get(self, url, data, cookie=None) -> object:
         """
         get_request
         :param url:
         :param data:
         :return:
         """
-        res = requests.get(url=url, params=data, verify=False).text
+        res = requests.get(url=url, params=data, verify=False, cookies=cookie).text
         return res
 
-    def run_main(self, method, url, data):
+    def run_main(self, method, url, data, cookie=None):
         """
         入口
         :param method:
@@ -54,10 +56,10 @@ class BaseRequest:
             url = base_url + url
         # print(url)
         if method == "get":
-           res = self.send_get(url, data)
+           res = self.send_get(url, data, cookie)
            # print("get request中にエラー出ました", url, data)
         else:
-           res = self.send_post(url, data)
+           res = self.send_post(url, data, cookie)
            # print("post request中にエラー出ました", url, data)
         try:
             res = json.loads(res)

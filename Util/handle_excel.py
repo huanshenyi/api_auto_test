@@ -60,9 +60,23 @@ class HandExcel:
              row_list.append(i.value)
         return row_list
 
+    def excel_write_data(self, row, cols, value):
+        """
+        データーの入力
+        :param row:
+        :param cols:
+        :param value:
+        :return:
+        """
+        wb = self.load_excel()
+        wr = wb.active
+        wr.cell(row, cols, value)
+        wb.save(base_path + "/Case/api_test_case_imooc.xlsx")
+
+
 
 excel_data = HandExcel()
 
 if __name__ == "__main__":
     handel = HandExcel()
-    print(handel.get_rows_value(2))
+    handel.excel_write_data(2, 11, "成功")
