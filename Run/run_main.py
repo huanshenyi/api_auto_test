@@ -11,14 +11,18 @@ from Util.handel_result import handel_result_json
 from Util.handel_result import handel_result, get_result_json
 from Base.base_request import request
 from Util.handle_cookie import get_cookie_value
+from Util.handle_cookie import write_cookie
+from Util.handle_header import get_header
 
 
 # ['001', '登録', 'Yes', None, 'Login', 'Post', '{“username”:”111111”}', 'Yes', 'message', None, None, None]
 class RunMain:
     def run_case(self):
         rows = excel_data.get_rows()
-        cookie = None
         for i in range(rows):
+            get_cookie = None
+            cookie = None
+            header = None
             data = excel_data.get_rows_value(i + 2)
             is_run = data[2]
             if is_run == "yes":
@@ -26,15 +30,23 @@ class RunMain:
                 # アクセスのapi
                 url = data[4]
                 data1 = data[6]
+                is_header = data[8]
                 # 予想結果判断の方法
-                excepect_method = data[8]
+                excepect_method = data[9]
                 # 予想結果
-                excepect_result = data[9]
+                excepect_result = data[10]
                 # クッキーの操作
                 cookie_method = data[7]
                 if cookie_method == "yes":
                     cookie = get_cookie_value("app")
-                res = request.run_main(method, url, data1, cookie)
+                if cookie_method == "write":
+                    """
+                    cookie取得後書き込む
+                    """
+                    get_cookie = {"is_cookie": "app"}
+                if is_header == "yes":
+                    header = get_header()
+                res = request.run_main(method, url, data1, cookie, get_cookie, header)
                 # print(res)
                 # 結果と予想結果を比較する
                 # サーバーのerrorCode
@@ -43,21 +55,21 @@ class RunMain:
                 if excepect_method == "mec":
                     config_message = handel_result(url, str(code))
                     if message == config_message:
-                        excel_data.excel_write_data(i+2, 11, "成功")
+                        excel_data.excel_write_data(i+2, 12, "成功")
                         print("テスト成功")
                     else:
-                        excel_data.excel_write_data(i + 2, 11, "失敗")
+                        excel_data.excel_write_data(i + 2, 12, "失敗")
                         # 失敗する場合は結果値も記入
-                        excel_data.excel_write_data(i + 2, 12, json.dumps(res))
+                        excel_data.excel_write_data(i + 2, 13, json.dumps(res))
                         print("case失敗")
                 elif excepect_method == "errorcode":
                     if excepect_result == code:
-                        excel_data.excel_write_data(i + 2, 11, "成功")
+                        excel_data.excel_write_data(i + 2, 12, "成功")
                         print("テスト成功")
                     else:
-                        excel_data.excel_write_data(i + 2, 11, "失敗")
+                        excel_data.excel_write_data(i + 2, 12, "失敗")
                         # 失敗する場合は結果値も記入
-                        excel_data.excel_write_data(i + 2, 12, json.dumps(res))
+                        excel_data.excel_write_data(i + 2, 13, json.dumps(res))
                         print("case失敗")
                 elif excepect_method == "json":
                     # err_codeに基づいての判断
@@ -69,12 +81,12 @@ class RunMain:
                     # サーバーからのリスポンスとjsonデータ比較
                     result = handel_result_json(res, excepect_result)
                     if result:
-                        excel_data.excel_write_data(i + 2, 11, "成功")
+                        excel_data.excel_write_data(i + 2, 12, "成功")
                         print("テスト成功")
                     else:
-                        excel_data.excel_write_data(i + 2, 11, "失敗")
+                        excel_data.excel_write_data(i + 2, 12, "失敗")
                         # 失敗する場合は結果値も記入
-                        excel_data.excel_write_data(i + 2, 12, json.dumps(res))
+                        excel_data.excel_write_data(i + 2, 13, json.dumps(res))
                         print("case失敗")
                 # break
 

@@ -10,6 +10,7 @@ sys.path.append(rootPath)
 
 from Util.handle_init import handle_init
 from datetime import datetime
+from Util.handle_cookie import write_cookie
 
 
 
@@ -17,32 +18,43 @@ class BaseRequest:
     def __init__(self):
         pass
 
-    def send_post(self, url, data, cookie=None) -> object:
+    def send_post(self, url, data, cookie=None, get_cookie=None, herader=None) -> object:
         """
         post_request
         :param url:
         :param data:
         :return:
         """
-
         data = json.dumps(data)
         print(datetime.now())
-        response = requests.post(url=url, data=data, verify=False, cookies=cookie)
+        response = requests.post(url=url, data=data, cookies=cookie, heraders=herader)
         print(datetime.now())
+        if get_cookie != None:
+            """
+            {"is_cookie":"app"}
+            """
+            cookie_value_jar = response.cookies
+            cookie_value = requests.utils.dict_from_cookiejar(cookie_value_jar)
+            write_cookie(cookie_value, get_cookie['is_cookie'])
         res = response.text
         return res
 
-    def send_get(self, url, data, cookie=None) -> object:
+    def send_get(self, url, data, cookie=None, get_cookie=None, herader=None) -> object:
         """
         get_request
         :param url:
         :param data:
         :return:
         """
-        res = requests.get(url=url, params=data, verify=False, cookies=cookie).text
+        response = requests.get(url=url, params=data, verify=False, cookies=cookie, heraders=herader)
+        if get_cookie != None:
+            cookie_value_jar = response.cookies
+            cookie_value = requests.utils.dict_from_cookiejar(cookie_value_jar)
+            write_cookie(cookie_value, get_cookie['is_cookie'])
+        res = response.text
         return res
 
-    def run_main(self, method, url, data, cookie=None):
+    def run_main(self, method, url, data, cookie=None, get_cookie=None, herader=None):
         """
         入口
         :param method:
@@ -56,11 +68,11 @@ class BaseRequest:
             url = base_url + url
         # print(url)
         if method == "get":
-           res = self.send_get(url, data, cookie)
-           # print("get request中にエラー出ました", url, data)
+           res = self.send_get(url, data, cookie, get_cookie, herader)
+
         else:
-           res = self.send_post(url, data, cookie)
-           # print("post request中にエラー出ました", url, data)
+           res = self.send_post(url, data, cookie, get_cookie, herader)
+
         try:
             res = json.loads(res)
         except:
